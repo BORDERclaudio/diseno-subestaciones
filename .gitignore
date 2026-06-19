@@ -3,3 +3,6 @@ __pycache__/
 *.db
 .env
 static/plots/*.png
+dist/
+*.spec
+build/
