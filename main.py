@@ -195,8 +195,10 @@ def ver_memoria(request: Request, memoria_id: int, db: Session = Depends(get_db)
     if not memoria:
         raise HTTPException(404)
     config = MODULOS[memoria.tipo]
-    p = db.query(config["param_cls"]).filter(config["param_cls"].memoria_id == memoria_id).first()
-    r = db.query(config["result_cls"]).filter(config["result_cls"].memoria_id == memoria_id).first()
+    p_obj = db.query(config["param_cls"]).filter(config["param_cls"].memoria_id == memoria_id).first()
+    r_obj = db.query(config["result_cls"]).filter(config["result_cls"].memoria_id == memoria_id).first()
+    p = {c.name: getattr(p_obj, c.name) for c in p_obj.__table__.columns} if p_obj else {}
+    r = {c.name: getattr(r_obj, c.name) for c in r_obj.__table__.columns} if r_obj else {}
     grafico = f"{memoria.id}.png" if (PLOTS_DIR / f"{memoria.id}.png").exists() else None
     return templates.TemplateResponse(request, config["template_result"], {
         "usuario": usuario,
