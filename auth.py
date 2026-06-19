@@ -7,7 +7,7 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session
 from database import get_db, Usuario
 
-SECRET_KEY = os.getenv("SECRET_KEY", "cambiar_clave_defecto")
+SECRET_KEY = os.getenv("SECRET_KEY", "c4mb14r_cl4v3_d3f3ct0_3n_pr0ducc10n_1234567890abcdef")
 ALGORITHM = "HS256"
 TOKEN_EXPIRE_HOURS = 48
 

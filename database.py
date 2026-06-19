@@ -1,9 +1,14 @@
-import os
+import os, sys
 from sqlalchemy import create_engine, Column, Integer, String, DateTime, Float, ForeignKey, Text
 from sqlalchemy.orm import declarative_base, sessionmaker, relationship
 from datetime import datetime, timezone
 
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./diseno_subestaciones.db")
+def _db_dir():
+    if getattr(sys, 'frozen', False):
+        return os.path.dirname(sys.executable)
+    return os.path.dirname(os.path.abspath(__file__))
+
+DATABASE_URL = os.getenv("DATABASE_URL", f"sqlite:///{os.path.join(_db_dir(), 'diseno_subestaciones.db')}")
 
 engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
