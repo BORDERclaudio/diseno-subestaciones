@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Resultados - Apantallamiento{% endblock %}
+{% block content %}
+<h3>{{ memoria.nombre }}</h3>
+<p class="text-muted">Apantallamiento (Esfera Rodante) — IEEE 998-2012
+   — Creada: {{ memoria.created_at.strftime('%d/%m/%Y %H:%M') }}</p>
+
+<div class="row mb-3">
+    <div class="col"><a href="/memoria/{{ memoria.id }}/exportar" class="btn btn-success">Exportar Word</a></div>
+    <div class="col text-end"><a href="/" class="btn btn-outline-secondary">Volver</a></div>
+</div>
+
+<div class="row">
+{% for label, key, unit in [
+    ("Radio equiv. haz (re)","r_e","cm"),
+    ("Radio corona Rc","Rc","cm"),
+    ("Iteraciones NR","n_iter_nr",""),
+    ("Radio corregido Rc'","Rc_prime","cm"),
+    ("Impedancia Zs","Zs","Ohm"),
+    ("Corriente min. I_min","I_min","kA"),
+] %}
+{% if r.get(key) is not none %}
+<div class="col-md-4 mb-2">
+<div class="metric-card">
+    <div class="value">{{ r.get(key,'') }}</div>
+    <div class="label">{{ label }}</div>
+    <small>{{ unit }}</small>
+</div></div>
+{% endif %}
+{% endfor %}
+</div>
+
+<hr>
+<div class="row">
+<div class="col-md-6">
+<div class="metric-card" style="background:#e8f0fe;">
+    <div class="value" style="font-size:2.2rem;color:#1f3a5f;">{{ r.get("S_esfera","") }} m</div>
+    <div class="label" style="font-size:1.1rem;">RADIO DE ESFERA RODANTE (S)</div>
+</div></div>
+<div class="col-md-6 text-center">
+    <p class="mt-3"><strong>S = 8 &middot; k &middot; I<sup>0.65</sup></strong></p>
+    <p>k = {% if p.tipo_elemento==1 %}1.0 (Cable de guarda){% else %}1.2 (Mastil){% endif %}</p>
+</div>
+</div>
+
+{% if grafico %}
+<div class="mt-4">
+    <h5>Grafico 3D - Esfera Rodante</h5>
+    <img src="/static/plots/{{ grafico }}" class="img-fluid" alt="Grafico 3D">
+</div>
+{% endif %}
+{% endblock %}

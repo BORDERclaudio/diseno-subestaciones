@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h3>Mis Memorias de Calculo</h3>
+    <a href="/nueva/{{ tipo_activo }}" class="btn btn-primary">+ Nueva Memoria</a>
+</div>
+
+<ul class="nav nav-tabs mb-4" id="moduloTabs">
+    {% for t, info in modulos.items() %}
+    <li class="nav-item">
+        <a class="nav-link {% if t == tipo_activo %}active{% endif %}"
+           href="/?tipo={{ t }}">{{ info.nombre }}</a>
+    </li>
+    {% endfor %}
+</ul>
+
+{% if memorias %}
+<div class="table-responsive">
+    <table class="table table-hover align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>Nombre</th>
+                <th>Creada</th>
+                <th>Actualizada</th>
+                <th style="width:220px">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for m in memorias %}
+            <tr>
+                <td><strong>{{ m.nombre }}</strong></td>
+                <td>{{ m.created_at.strftime('%d/%m/%Y %H:%M') }}</td>
+                <td>{{ m.updated_at.strftime('%d/%m/%Y %H:%M') }}</td>
+                <td>
+                    <a href="/memoria/{{ m.id }}" class="btn btn-sm btn-outline-primary">Ver</a>
+                    <a href="/memoria/{{ m.id }}/exportar" class="btn btn-sm btn-outline-success">Word</a>
+                    <a href="/memoria/{{ m.id }}/eliminar" class="btn btn-sm btn-outline-danger"
+                       onclick="return confirm('Eliminar esta memoria?')">Eliminar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="alert alert-info">
+    No hay memorias de {{ modulos[tipo_activo].nombre|lower }}.
+    <a href="/nueva/{{ tipo_activo }}">Crear la primera</a>
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}Nueva Memoria - Conductores{% endblock %}
+{% block content %}
+<h3>{% if editar %}Editar{% else %}Nueva{% endif %} Memoria - Conductores Flexibles</h3>
+<form method="post">
+<div class="row">
+    <div class="col-md-6">
+        <div class="card mb-3">
+            <div class="card-header">Nombre de la Memoria</div>
+            <div class="card-body">
+                <input name="nombre" class="form-control" value="{{ p.get('nombre','') }}" required>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+<div class="col-md-6">
+<div class="card mb-3"><div class="card-header">Geometria del Conductor</div>
+<div class="card-body">
+<div class="mb-2"><label>n = Subconductores por fase</label><input name="n" class="form-control" type="number" step="1" value="{{ p.get('n',2) }}"></div>
+<div class="mb-2"><label>d = Diametro subconductor (mm)</label><input name="d_mm" class="form-control" type="number" step="0.1" value="{{ p.get('d_mm',28.0) }}"></div>
+<div class="mb-2"><label>as = Separacion subconductores (m)</label><input name="as_m" class="form-control" type="number" step="0.001" value="{{ p.get('as_m',0.07) }}"></div>
+<div class="mb-2"><label>m's = Masa lineal (kg/m)</label><input name="m_s" class="form-control" type="number" step="0.001" value="{{ p.get('m_s',1.955) }}"></div>
+<div class="mb-2"><label>As = Area seccion (mm2)</label><input name="As_mm2" class="form-control" type="number" step="1" value="{{ p.get('As_mm2',610) }}"></div>
+</div></div>
+</div>
+
+<div class="col-md-6">
+<div class="card mb-3"><div class="card-header">Geometria del Vano</div>
+<div class="card-body">
+<div class="mb-2"><label>l = Longitud del vano (m)</label><input name="l" class="form-control" type="number" step="0.1" value="{{ p.get('l',11.5) }}"></div>
+<div class="mb-2"><label>a = Distancia entre fases (m)</label><input name="a" class="form-control" type="number" step="0.1" value="{{ p.get('a',3.0) }}"></div>
+<div class="mb-2"><label>li = Longitud aisladores (m)</label><input name="li" class="form-control" type="number" step="0.1" value="{{ p.get('li',1.5) }}"></div>
+<div class="mb-2"><label>fes = Flecha estatica (m)</label><input name="fes" class="form-control" type="number" step="0.001" value="{{ p.get('fes',0.433) }}"></div>
+<div class="mb-2"><label>h = Altura conductor (m)</label><input name="h" class="form-control" type="number" step="0.5" value="{{ p.get('h',15.0) }}"></div>
+</div></div>
+</div>
+</div>
+
+<div class="row">
+<div class="col-md-6">
+<div class="card mb-3"><div class="card-header">Cargas de Viento y Hielo</div>
+<div class="card-body">
+<div class="mb-2"><label>V = Velocidad viento (m/s)</label><input name="V" class="form-control" type="number" step="1" value="{{ p.get('V',30) }}"></div>
+<div class="mb-2"><label>Cz = Factor altura/exposicion (Kz)</label><input name="Cz" class="form-control" type="number" step="0.05" value="{{ p.get('Cz',1.0) }}"></div>
+<div class="mb-2"><label>Gf = Factor de rafaga</label><input name="Gf" class="form-control" type="number" step="0.01" value="{{ p.get('Gf',0.85) }}"></div>
+<div class="mb-2"><label>Cf = Coef. arrastre</label><input name="Cf" class="form-control" type="number" step="0.1" value="{{ p.get('Cf',1.0) }}"></div>
+<div class="mb-2"><label>t_hielo = Espesor hielo (mm)</label><input name="t_ice" class="form-control" type="number" step="0.5" value="{{ p.get('t_ice',0) }}"></div>
+<div class="mb-2"><label>w_hielo = Peso especifico hielo (N/m3)</label><input name="w_ice" class="form-control" type="number" step="100" value="{{ p.get('w_ice',8820) }}"></div>
+</div></div>
+</div>
+
+<div class="col-md-6">
+<div class="card mb-3"><div class="card-header">Cortocircuito</div>
+<div class="card-body">
+<div class="mb-2"><label>I''k3 = Corriente CC 3F (kA)</label><input name="Ik3_kA" class="form-control" type="number" step="0.1" value="{{ p.get('Ik3_kA',40) }}"></div>
+<div class="mb-2"><label>Tk1 = Duracion CC (s)</label><input name="Tk1" class="form-control" type="number" step="0.01" value="{{ p.get('Tk1',0.16) }}"></div>
+<div class="mb-2"><label>f = Frecuencia (Hz)</label><input name="f_sys" class="form-control" type="number" step="1" value="{{ p.get('f_sys',50) }}"></div>
+<div class="mb-2"><label>S = Rigidez soporte (N/m)</label><input name="S_sup" class="form-control" type="number" step="1000" value="{{ p.get('S_sup',100000) }}"></div>
+<div class="mb-2"><label>Eeff = Mod. Young efectivo (GPa)</label><input name="E_eff_GPa" class="form-control" type="number" step="1" value="{{ p.get('E_eff_GPa',55) }}"></div>
+<div class="mb-2"><label>cth = Cte termica (e-18 m4/A2s)</label><input name="cth_e18" class="form-control" type="number" step="0.01" value="{{ p.get('cth_e18',0.27) }}"></div>
+</div></div>
+</div>
+</div>
+
+<button type="submit" class="btn btn-primary btn-lg w-100">Calcular y Guardar</button>
+</form>
+{% endblock %}

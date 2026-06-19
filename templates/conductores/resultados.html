@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block title %}Resultados - Conductores{% endblock %}
+{% block content %}
+<h3>{{ memoria.nombre }}</h3>
+<p class="text-muted">Conductores Flexibles — Creada: {{ memoria.created_at.strftime('%d/%m/%Y %H:%M') }}</p>
+
+<div class="row mb-3">
+    <div class="col"><a href="/memoria/{{ memoria.id }}/exportar" class="btn btn-success">Exportar Word</a></div>
+    <div class="col text-end"><a href="/" class="btn btn-outline-secondary">Volver</a></div>
+</div>
+
+<ul class="nav nav-tabs mb-3" id="resultTabs">
+    <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#estaticas">Cargas Estaticas</a></li>
+    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#cc">Cortocircuito</a></li>
+    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#grafico3d">Grafico 3D</a></li>
+</ul>
+
+<div class="tab-content">
+<div class="tab-pane active" id="estaticas">
+<div class="row">
+{% for label, key, unit in [
+    ("Peso conductor (Fc)","Fc","N/m"),("Peso hielo (FI)","FI","N/m"),
+    ("Peso total vertical","w_tot","N/m"),("Fza. viento (FW)","FW","N/m"),
+    ("Carga resultante","w_res","N/m"),("Tension estatica (Fst)","Fst","N"),
+    ("Angulo balanceo x viento","d_viento","deg"),("Desplazamiento horiz.","bh_viento","m")
+] %}
+<div class="col-md-3 mb-2">
+<div class="metric-card">
+    <div class="value">{{ r.get(key,'') }}</div>
+    <div class="label">{{ label }}</div>
+    <small>{{ unit }}</small>
+</div></div>
+{% endfor %}
+</div></div>
+
+<div class="tab-pane" id="cc">
+<div class="row">
+{% for label, key, unit in [
+    ("F' (carga EM)","Fp","N/m"),("r = F'/W","r",""),("d1 = arctan(r)","d1","deg"),
+    ("Periodo T","T","s"),("Periodo Tres","Tres","s"),
+    ("d_end (IEC)","d_end_iec","deg"),("dk (IEEE)","dk_ieee","deg"),
+    ("d_max (IEC)","d_max_iec","deg"),("dm (IEEE)","dm_ieee","deg")
+] %}
+<div class="col-md-3 mb-2">
+<div class="metric-card">
+    <div class="value">{{ r.get(key,'') }}</div>
+    <div class="label">{{ label }}</div>
+    <small>{{ unit }}</small>
+</div></div>
+{% endfor %}
+</div>
+<hr>
+<h5>Tensiones en el Conductor</h5>
+<div class="row">
+{% for label, key, unit in [
+    ("Ft (IEC)","Ft_iec","N"),("Ft (IEEE)","Ft_ieee","N"),
+    ("Ff (IEC)","Ff_iec","N"),("Ff (IEEE)","Ff_ieee","N")
+] %}
+<div class="col-md-3 mb-2">
+<div class="metric-card">
+    <div class="value">{{ r.get(key,'') }}</div>
+    <div class="label">{{ label }}</div>
+    <small>{{ unit }}</small>
+</div></div>
+{% endfor %}
+</div>
+<h5>Desplazamiento y Distancias</h5>
+<div class="row">
+{% for label, key, unit in [
+    ("bh (IEC)","bh_iec","m"),("bh (IEEE)","bh_ieee","m"),
+    ("a_min (IEC)","a_min_iec","m"),("a_min (IEEE)","a_min_ieee","m"),
+    ("CD (IEC)","CD_iec",""),("CD (IEEE)","CD_ieee",""),
+    ("CF","CF",""),("fed","fed","m")
+] %}
+<div class="col-md-3 mb-2">
+<div class="metric-card">
+    <div class="value">{{ r.get(key,'') }}</div>
+    <div class="label">{{ label }}</div>
+    <small>{{ unit }}</small>
+</div></div>
+{% endfor %}
+</div></div>
+
+<div class="tab-pane" id="grafico3d">
+{% if grafico %}
+<img src="/static/plots/{{ grafico }}" class="img-fluid" alt="Grafico 3D">
+{% else %}
+<p class="text-muted">Grafico no disponible.</p>
+{% endif %}
+</div></div>
+
+{% endblock %}

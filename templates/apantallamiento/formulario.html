@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}Nueva Memoria - Apantallamiento{% endblock %}
+{% block content %}
+<h3>{% if editar %}Editar{% else %}Nueva{% endif %} Memoria - Apantallamiento (Esfera Rodante)</h3>
+<form method="post">
+<div class="row">
+    <div class="col-md-6">
+        <div class="card mb-3">
+            <div class="card-header">Nombre de la Memoria</div>
+            <div class="card-body">
+                <input name="nombre" class="form-control" value="{{ p.get('nombre','') }}" required>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+<div class="col-md-6">
+<div class="card mb-3"><div class="card-header">Datos Generales</div>
+<div class="card-body">
+<div class="mb-2"><label>Vnom = Tension nominal (kV)</label><input name="Vnom" class="form-control" type="number" step="0.1" value="{{ p.get('Vnom',220) }}"></div>
+<div class="mb-2"><label>BIL (kV)</label><input name="BIL" class="form-control" type="number" step="1" value="{{ p.get('BIL',1050) }}"></div>
+<div class="mb-2"><label>h = Altura conductor mas alto (m)</label><input name="h" class="form-control" type="number" step="0.5" value="{{ p.get('h',15) }}"></div>
+</div></div>
+
+<div class="card mb-3"><div class="card-header">Configuracion del Haz</div>
+<div class="card-body">
+<div class="mb-2"><label>n = Subconductores</label><input name="n" class="form-control" type="number" step="1" value="{{ p.get('n',2) }}"></div>
+<div class="mb-2"><label>d = Diametro subconductor (mm)</label><input name="d_mm" class="form-control" type="number" step="0.1" value="{{ p.get('d_mm',25.4) }}"></div>
+<div class="mb-2"><label>s = Separacion entre subconductores (cm)</label><input name="s_cm" class="form-control" type="number" step="0.1" value="{{ p.get('s_cm',45.7) }}"></div>
+</div></div>
+</div>
+
+<div class="col-md-6">
+<div class="card mb-3"><div class="card-header">Parametros Electricos</div>
+<div class="card-body">
+<div class="mb-2"><label>E0 = Gradiente critico corona (kV/cm)</label><input name="E0" class="form-control" type="number" step="0.1" value="{{ p.get('E0',21.1) }}"></div>
+</div></div>
+
+<div class="card mb-3"><div class="card-header">Tipo de Elemento</div>
+<div class="card-body">
+<div class="form-check">
+  <input class="form-check-input" type="radio" name="tipo_elemento" value="1"
+    {% if p.get('tipo_elemento',1)==1 %}checked{% endif %}>
+  <label class="form-check-label">Cable de guarda (k=1.0)</label>
+</div>
+<div class="form-check">
+  <input class="form-check-input" type="radio" name="tipo_elemento" value="2"
+    {% if p.get('tipo_elemento',1)==2 %}checked{% endif %}>
+  <label class="form-check-label">Mastil / Punta Franklin (k=1.2)</label>
+</div>
+</div></div>
+
+<div class="card mb-3"><div class="card-header">Opcion de Iteracion</div>
+<div class="card-body">
+<div class="form-check">
+  <input class="form-check-input" type="radio" name="modo_iter" value="1"
+    {% if p.get('modo_iter',1)==1 %}checked{% endif %}>
+  <label class="form-check-label">Iteracion completa Rc &harr; Zs (mas preciso)</label>
+</div>
+<div class="form-check">
+  <input class="form-check-input" type="radio" name="modo_iter" value="2"
+    {% if p.get('modo_iter',1)==2 %}checked{% endif %}>
+  <label class="form-check-label">Solo Newton-Raphson (rapido)</label>
+</div>
+</div></div>
+</div>
+</div>
+
+<button type="submit" class="btn btn-primary btn-lg w-100">Calcular y Guardar</button>
+</form>
+{% endblock %}
